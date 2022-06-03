@@ -1,0 +1,18 @@
+﻿
+@model PassionProject_Movie.Models.MovieDto
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Movie's Details</h2>
+
+<div>
+    <a class="navlink" href="/Movie/List">Back To Movies' List</a>
+</div>
+
+<div id="containershow">
+    <h2>@Model.MovieName</h2>
+    <div>Introduction: @Model.MovieIntro</div>
+    <div>Release Date: @Model.ReleaseDate.ToString("dd-MMM-yyyy")</div>
+    <div>Director: @Model.DirectorFName @Model.DirectorLName</div>
+</div>

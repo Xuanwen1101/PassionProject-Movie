@@ -1,0 +1,21 @@
+﻿
+@model IEnumerable<PassionProject_Movie.Models.MovieDto>
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>List of Movies</h2>
+
+@*<div>There are @Model.Count() movies in the system.</div>*@
+
+
+<div id="containerlist">
+    @foreach (var movie in Model)
+    {
+        <h2><a href="/Movie/Details/@movie.MovieID">@movie.MovieName</a></h2>
+        <div>Release Date: @movie.ReleaseDate.ToString("dd-MMM-yyyy")</div>
+        <div>Director: @movie.DirectorFName @movie.DirectorLName</div>
+
+
+    }
+</div>

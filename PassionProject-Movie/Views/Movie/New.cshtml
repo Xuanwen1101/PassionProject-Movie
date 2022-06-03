@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Add New Movie</h2>
+
+<form action="/Movie/Create" method="POST">
+    <div>
+        <label>Name:</label> <input type="text" name="MovieName" />
+    </div>
+    <div>
+        <label>Director ID:</label> <input type="number" name="DirectorID" />
+    </div>
+    <div>
+        <label>Release Date:</label> <input type="date" name="ReleaseDate" />
+    </div>
+    <div>
+        <label>Introduction:</label>
+    </div>
+    <div>
+        <textarea name="MovieIntro" rows="5" cols="30" maxlength="500" placeholder="Type here..."></textarea>
+    </div>
+    <div>
+        <input type="submit" value="Add Movie" />
+
+    </div>
+</form>
