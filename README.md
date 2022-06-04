@@ -5,7 +5,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/Xuanwen1101/PassionProject-Movie">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="images/logo.png" alt="Logo" width="120" height="80">
   </a>
 
   <h3 align="center">Find New Movies</h3>
@@ -106,7 +106,7 @@ curl -H "Content-Type:application/json" -d @movie.json  https://localhost:44349/
 ## Entities Relationship
 
 
-![Entyties Relationship](images/er.png)
+![Entyties Relationship](images/er.PNG)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
