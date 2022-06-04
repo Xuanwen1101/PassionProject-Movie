@@ -30,6 +30,7 @@
     <li><a href="#entities-relationship">Entities Relationship</a></li>
     <li><a href="#project-scope">Project Scope</a></li>
     <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
   </ol>
 </details>
 
