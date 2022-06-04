@@ -16,30 +16,190 @@ namespace PassionProject_Movie.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: api/MovieData/ListMovies
+        /// <summary>
+        /// Returns all Movies in the system.
+        /// </summary>
+        /// <returns>
+        /// HEADER: 200 (OK)
+        /// CONTENT: all Movies in the database.
+        /// </returns>
+        /// <example>
+        /// GET: api/MovieData/ListMovies
+        /// </example>
         [HttpGet]
-        public IEnumerable<MovieDto> ListMovies()
+        [ResponseType(typeof(MovieDto))]
+        public IHttpActionResult ListMovies()
         {
             List<Movie> Movies = db.Movies.ToList();
             List<MovieDto> MovieDtos = new List<MovieDto>();
 
-            Movies.ForEach(a => MovieDtos.Add(new MovieDto()
+            Movies.ForEach(m => MovieDtos.Add(new MovieDto()
             {
-                MovieID = a.MovieID,
-                MovieName = a.MovieName,
-                MovieIntro = a.MovieIntro,
-                ReleaseDate = a.ReleaseDate,
-                DirectorFName = a.Director.DirectorFName,
-                DirectorLName = a.Director.DirectorLName
+                MovieID = m.MovieID,
+                MovieName = m.MovieName,
+                MovieIntro = m.MovieIntro,
+                ReleaseDate = m.ReleaseDate,
+                DirectorID = m.Director.DirectorID,
+                DirectorFName = m.Director.DirectorFName,
+                DirectorLName = m.Director.DirectorLName
             }));
 
 
-            return MovieDtos;
+            return Ok(MovieDtos);
 
         }
 
-        // GET: api/MovieData/FindMovie/5
-        [ResponseType(typeof(Movie))]
+        /// <summary>
+        /// Gathers information about all Movies related to the selected Director ID
+        /// </summary>
+        /// <returns>
+        /// HEADER: 200 (OK)
+        /// CONTENT: all Movies in the database matched with the selected Director ID
+        /// </returns>
+        /// <param name="id">Director ID.</param>
+        /// <example>
+        /// GET: api/MovieData/ListMoviesForDirector/3
+        /// </example>
+        [HttpGet]
+        [ResponseType(typeof(MovieDto))]
+        public IHttpActionResult ListMoviesForDirector(int id)
+        {
+            List<Movie> Movies = db.Movies.Where(m => m.DirectorID == id).ToList();
+            List<MovieDto> MovieDtos = new List<MovieDto>();
+
+            Movies.ForEach(m => MovieDtos.Add(new MovieDto()
+            {
+                MovieID = m.MovieID,
+                MovieName = m.MovieName,
+                MovieIntro = m.MovieIntro,
+                ReleaseDate = m.ReleaseDate,
+                DirectorID = m.Director.DirectorID,
+                DirectorFName = m.Director.DirectorFName,
+                DirectorLName = m.Director.DirectorLName
+            }));
+
+            return Ok(MovieDtos);
+        }
+
+        /// <summary>
+        /// Gathers information about Movies related to the selected Cinema ID
+        /// </summary>
+        /// <returns>
+        /// HEADER: 200 (OK)
+        /// CONTENT: all Movies in the database matched to the selected Cinema ID
+        /// </returns>
+        /// <param name="id">Cinema ID.</param>
+        /// <example>
+        /// GET: api/MovieData/ListMoviesForCinema/2
+        /// </example>
+        [HttpGet]
+        [ResponseType(typeof(MovieDto))]
+        public IHttpActionResult ListMoviesForCinema(int id)
+        {
+            //all Movies that have Cinemas which match with our ID
+            List<Movie> Movies = db.Movies.Where(
+                m => m.Cinemas.Any(
+                    c => c.CinemaID == id
+                )).ToList();
+            List<MovieDto> MovieDtos = new List<MovieDto>();
+
+            Movies.ForEach(m => MovieDtos.Add(new MovieDto()
+            {
+                MovieID = m.MovieID,
+                MovieName = m.MovieName,
+                MovieIntro = m.MovieIntro,
+                ReleaseDate = m.ReleaseDate,
+                DirectorID = m.Director.DirectorID,
+                DirectorFName = m.Director.DirectorFName,
+                DirectorLName = m.Director.DirectorLName
+            }));
+
+            return Ok(MovieDtos);
+        }
+
+
+        /// <summary>
+        /// Associates a particular cinema with a particular movie
+        /// </summary>
+        /// <param name="movieId">The movie ID primary key</param>
+        /// <param name="cinemaId">The cinema ID primary key</param>
+        /// <returns>
+        /// HEADER: 200 (OK)
+        /// or
+        /// HEADER: 404 (NOT FOUND)
+        /// </returns>
+        /// <example>
+        /// POST api/MovieData/AssociateMovieWithCinema/9/1
+        /// </example>
+        [HttpPost]
+        [Route("api/MovieData/AssociateMovieWithCinema/{movieId}/{cinemaId}")]
+        public IHttpActionResult AssociateMovieWithCinema(int movieId, int cinemaId)
+        {
+
+            Movie SelectedMovie = db.Movies.Include(m => m.Cinemas).Where(m => m.MovieID == movieId).FirstOrDefault();
+            Cinema SelectedCinema = db.Cinemas.Find(cinemaId);
+
+            if (SelectedMovie == null || SelectedCinema == null)
+            {
+                return NotFound();
+            }
+
+
+            SelectedMovie.Cinemas.Add(SelectedCinema);
+            db.SaveChanges();
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Removes an association between a particular cinema and a particular movie
+        /// </summary>
+        /// <param name="movieId">The movie ID primary key</param>
+        /// <param name="cinemaId">The cinema ID primary key</param>
+        /// <returns>
+        /// HEADER: 200 (OK)
+        /// or
+        /// HEADER: 404 (NOT FOUND)
+        /// </returns>
+        /// <example>
+        /// POST api/MovieData/AssociateMovieWithCinema/9/1
+        /// </example>
+        [HttpPost]
+        [Route("api/MovieData/UnAssociateMovieWithCinema/{movieId}/{cinemaId}")]
+        public IHttpActionResult UnAssociateMovieWithCinema(int movieId, int cinemaId)
+        {
+
+            Movie SelectedMovie = db.Movies.Include(m => m.Cinemas).Where(m => m.MovieID == movieId).FirstOrDefault();
+            Cinema SelectedCinema = db.Cinemas.Find(cinemaId);
+
+            if (SelectedMovie == null || SelectedCinema == null)
+            {
+                return NotFound();
+            }
+
+
+            SelectedMovie.Cinemas.Remove(SelectedCinema);
+            db.SaveChanges();
+
+            return Ok();
+        }
+
+
+
+        /// <summary>
+        /// Returns all movies in the system.
+        /// </summary>
+        /// <returns>
+        /// HEADER: 200 (OK)
+        /// CONTENT: The movie in the system matching up to the movie ID primary key
+        /// or
+        /// HEADER: 404 (NOT FOUND)
+        /// </returns>
+        /// <param name="id">The primary key of the movie</param>
+        /// <example>
+        /// GET: api/MovieData/FindMovie/5
+        /// </example>
+        [ResponseType(typeof(MovieDto))]
         [HttpGet]
         public IHttpActionResult FindMovie(int id)
         {
@@ -50,6 +210,7 @@ namespace PassionProject_Movie.Controllers
                 MovieName = Movie.MovieName,
                 MovieIntro = Movie.MovieIntro,
                 ReleaseDate = Movie.ReleaseDate,
+                DirectorID = Movie.Director.DirectorID,
                 DirectorFName = Movie.Director.DirectorFName,
                 DirectorLName = Movie.Director.DirectorLName
             };
@@ -61,7 +222,23 @@ namespace PassionProject_Movie.Controllers
             return Ok(MovieDto);
         }
 
-        // PUT: api/MovieData/UpdateMovie/5
+
+        /// <summary>
+        /// Updates the selected movie in the system with POST Data input
+        /// </summary>
+        /// <param name="id">Represents the Movie ID primary key</param>
+        /// <param name="movie">JSON FORM DATA of an movie</param>
+        /// <returns>
+        /// HEADER: 204 (Success, No Content Response)
+        /// or
+        /// HEADER: 400 (Bad Request)
+        /// or
+        /// HEADER: 404 (Not Found)
+        /// </returns>
+        /// <example>
+        /// PUT: api/MovieData/UpdateMovie/5
+        /// FORM DATA: Movie JSON Object
+        /// </example>
         [ResponseType(typeof(void))]
         [HttpPost]
         public IHttpActionResult UpdateMovie(int id, Movie movie)
@@ -97,7 +274,21 @@ namespace PassionProject_Movie.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/MovieData/AddMovie
+
+        /// <summary>
+        /// Adds a Movie to the system
+        /// </summary>
+        /// <param name="movie">JSON FORM DATA of a Movie</param>
+        /// <returns>
+        /// HEADER: 201 (Created)
+        /// CONTENT: Movie ID, Movie Data
+        /// or
+        /// HEADER: 400 (Bad Request)
+        /// </returns>
+        /// <example>
+        /// POST: api/MovieData/AddMovie
+        /// FORM DATA: Movie JSON Object
+        /// </example>
         [ResponseType(typeof(Movie))]
         [HttpPost]
         public IHttpActionResult AddMovie(Movie movie)
@@ -113,7 +304,20 @@ namespace PassionProject_Movie.Controllers
             return CreatedAtRoute("DefaultApi", new { id = movie.MovieID }, movie);
         }
 
-        // DELETE: api/MovieData/DeleteMovie/5
+
+        /// <summary>
+        /// Deletes the selected Movie from the system by it's ID.
+        /// </summary>
+        /// <param name="id">The primary key of the Movie</param>
+        /// <returns>
+        /// HEADER: 200 (OK)
+        /// or
+        /// HEADER: 404 (NOT FOUND)
+        /// </returns>
+        /// <example>
+        /// DELETE: api/MovieData/DeleteMovie/5
+        /// FORM DATA: (empty)
+        /// </example>
         [ResponseType(typeof(Movie))]
         [HttpPost]
         public IHttpActionResult DeleteMovie(int id)

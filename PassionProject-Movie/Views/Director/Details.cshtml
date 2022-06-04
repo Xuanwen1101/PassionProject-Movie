@@ -1,0 +1,33 @@
+﻿@model PassionProject_Movie.Models.ViewModels.DetailsDirector
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Director's Details</h2>
+
+<div>
+    <a class="navlink" href="/Director/List">Back To Directors' List</a>
+</div>
+<div>
+    <a class="dellink" href="/Director/DeleteConfirm/@Model.SelectedDirector.DirectorID">Delete This Director</a>
+</div>
+<div>
+    <a class="navlink" href="/Director/Edit/@Model.SelectedDirector.DirectorID">Update This Director</a>
+</div>
+
+<div id="containershow">
+    <h2>@Model.SelectedDirector.DirectorFName @Model.SelectedDirector.DirectorLName</h2>
+    <div>Director Bio: @Model.SelectedDirector.DirectorBio</div>
+
+    <div style="margin-top:100px;">
+        <h3>Movies filmed by @Model.SelectedDirector.DirectorFName @Model.SelectedDirector.DirectorLName:</h3>
+        @foreach (var movie in Model.FilmedMovies)
+        {
+            <div>
+                <a href="/Movie/Details/@movie.MovieID">@movie.MovieName</a>
+            </div>
+        }
+    </div>
+
+</div>
+

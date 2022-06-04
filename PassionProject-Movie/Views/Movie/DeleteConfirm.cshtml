@@ -1,0 +1,21 @@
+﻿@model PassionProject_Movie.Models.MovieDto
+@{
+    ViewBag.Title = "DeleteConfirm";
+}
+
+<h2>Are you sure you want to delete @Model.MovieName?</h2>
+
+<p>This action cannot be undone.</p>
+
+<nav>
+    <a class="navlink" href="/Movie/Details/@Model.MovieID">Cancel</a>
+</nav>
+
+<form method="POST" action="/Movie/Delete/@Model.MovieID">
+
+    <button class="delbutton">
+        Confirm Delete
+    </button>
+
+</form>
+

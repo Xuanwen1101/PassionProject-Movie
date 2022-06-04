@@ -16,28 +16,85 @@ namespace PassionProject_Movie.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: api/DirectorData/ListDirectors
+        /// <summary>
+        /// Returns all Directors in the system.
+        /// </summary>
+        /// <returns>
+        /// HEADER: 200 (OK)
+        /// CONTENT: all Directors in the database, including the associated Director.
+        /// </returns>
+        /// <example>
+        /// GET: api/DirectorData/ListDirectors
+        /// </example>
         [HttpGet]
-        public IQueryable<Director> ListDirectors()
+        [ResponseType(typeof(DirectorDto))]
+        public IHttpActionResult ListDirectors()
         {
-            return db.Directors;
+            List<Director> Director = db.Directors.ToList();
+            List<DirectorDto> DirectorDtos = new List<DirectorDto>();
+
+            Director.ForEach(d => DirectorDtos.Add(new DirectorDto()
+            {
+                DirectorID = d.DirectorID,
+                DirectorFName = d.DirectorFName,
+                DirectorLName = d.DirectorLName,
+                DirectorBio = d.DirectorBio
+            }));
+
+            return Ok(DirectorDtos);
         }
 
-        // GET: api/DirectorData/FindDirector/5
+
+        /// <summary>
+        /// Returns all Directors in the system.
+        /// </summary>
+        /// <returns>
+        /// HEADER: 200 (OK)
+        /// CONTENT: An Director in the system matching up to the Director ID primary key
+        /// or
+        /// HEADER: 404 (NOT FOUND)
+        /// </returns>
+        /// <param name="id">The primary key of the Director</param>
+        /// <example>
+        /// GET: api/DirectorData/FindDirector/5
+        /// </example>
         [ResponseType(typeof(Director))]
         [HttpGet]
         public IHttpActionResult FindDirector(int id)
         {
-            Director director = db.Directors.Find(id);
-            if (director == null)
+            Director Director = db.Directors.Find(id);
+            DirectorDto DirectorDto = new DirectorDto()
+            {
+                DirectorID = Director.DirectorID,
+                DirectorFName = Director.DirectorFName,
+                DirectorLName = Director.DirectorLName,
+                DirectorBio = Director.DirectorBio
+            };
+            if (Director == null)
             {
                 return NotFound();
             }
 
-            return Ok(director);
+            return Ok(DirectorDto);
         }
 
-        // PUT: api/DirectorData/UpdateDirector/5
+
+        /// <summary>
+        /// Updates a particular Director in the system with POST Data input
+        /// </summary>
+        /// <param name="id">Represents the Director ID primary key</param>
+        /// <param name="Director">JSON FORM DATA of an Director</param>
+        /// <returns>
+        /// HEADER: 204 (Success, No Content Response)
+        /// or
+        /// HEADER: 400 (Bad Request)
+        /// or
+        /// HEADER: 404 (Not Found)
+        /// </returns>
+        /// <example>
+        /// PUT: api/DirectorData/UpdateDirector/5
+        /// FORM DATA: Director JSON Object
+        /// </example>
         [ResponseType(typeof(void))]
         [HttpPost]
         public IHttpActionResult UpdateDirector(int id, Director director)
@@ -73,7 +130,21 @@ namespace PassionProject_Movie.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/DirectorData/AddDirector
+
+        /// <summary>
+        /// Adds an Director to the system
+        /// </summary>
+        /// <param name="Director">JSON FORM DATA of an Director</param>
+        /// <returns>
+        /// HEADER: 201 (Created)
+        /// CONTENT: Director ID, Director Data
+        /// or
+        /// HEADER: 400 (Bad Request)
+        /// </returns>
+        /// <example>
+        /// POST: api/DirectorData/AddDirector
+        /// FORM DATA: Director JSON Object
+        /// </example>
         [ResponseType(typeof(Director))]
         [HttpPost]
         public IHttpActionResult AddDirector(Director director)
@@ -89,7 +160,20 @@ namespace PassionProject_Movie.Controllers
             return CreatedAtRoute("DefaultApi", new { id = director.DirectorID }, director);
         }
 
-        // DELETE: api/DirectorData/DeleteDirector/5
+
+        /// <summary>
+        /// Deletes an Director from the system by it's ID.
+        /// </summary>
+        /// <param name="id">The primary key of the Director</param>
+        /// <returns>
+        /// HEADER: 200 (OK)
+        /// or
+        /// HEADER: 404 (NOT FOUND)
+        /// </returns>
+        /// <example>
+        /// DELETE: api/DirectorData/DeleteDirector/5
+        /// FORM DATA: (empty)
+        /// </example>
         [ResponseType(typeof(Director))]
         [HttpPost]
         public IHttpActionResult DeleteDirector(int id)
@@ -118,6 +202,6 @@ namespace PassionProject_Movie.Controllers
         private bool DirectorExists(int id)
         {
             return db.Directors.Count(e => e.DirectorID == id) > 0;
-        }
+        } 
     }
 }

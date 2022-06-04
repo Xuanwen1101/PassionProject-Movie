@@ -1,0 +1,29 @@
+﻿@model PassionProject_Movie.Models.DirectorDto
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Update Director</h2>
+<form action="/Director/Update/@Model.DirectorID" method="POST">
+    <div style="display:none;">
+        @* Pass through the Director ID *@
+        <input type="text" name="DirectorID" value="@Model.DirectorID" />
+    </div>
+    <div>
+        <label>First Name:</label> <input type="text" name="DirectorFName" value="@Model.DirectorFName" />
+    </div>
+    <div>
+        <label>Last Name:</label> <input type="text" name="DirectorLName" value="@Model.DirectorLName" />
+    </div>
+    <div>
+        <label>Director Bio:</label>
+    </div>
+    <div>
+        <textarea name="DirectorBio" rows="5" cols="30" maxlength="500">@Model.DirectorBio</textarea>
+    </div>
+    <div>
+        <input type="submit" value="Update Director" />
+
+    </div>
+</form>
+

@@ -17,4 +17,12 @@ namespace PassionProject_Movie.Models
         //A cinema can show many movies.
         public ICollection<Movie> Movies { get; set; }
     }
+
+    public class CinemaDto
+    {
+        public int CinemaID { get; set; }
+        public string CinemaName { get; set; }
+        public string CinemaLocation { get; set; }
+    }
+
 }

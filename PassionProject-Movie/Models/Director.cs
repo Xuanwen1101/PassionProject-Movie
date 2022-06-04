@@ -16,4 +16,14 @@ namespace PassionProject_Movie.Models
         public string DirectorBio { get; set; }
 
     }
+
+    public class DirectorDto
+    {
+        public int DirectorID { get; set; }
+        public string DirectorFName { get; set; }
+        public string DirectorLName { get; set; }
+        public string DirectorBio { get; set; }
+
+    }
+
 }

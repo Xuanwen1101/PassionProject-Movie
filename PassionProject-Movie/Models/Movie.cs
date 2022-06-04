@@ -34,6 +34,7 @@ namespace PassionProject_Movie.Models
         public string MovieIntro { get; set; }
         public DateTime ReleaseDate { get; set; }
 
+        public int DirectorID { get; set; }
         public string DirectorFName { get; set; }
         public string DirectorLName { get; set; }
 

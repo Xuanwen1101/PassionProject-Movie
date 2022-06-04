@@ -1,0 +1,20 @@
+﻿@model IEnumerable<PassionProject_Movie.Models.CinemaDto>
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>List of Cinemas</h2>
+
+<div>
+    <a class="navlink" href="/Cinema/New">Add a New Cinema</a>
+</div>
+
+
+<div id="containerlist">
+    @foreach (var cinema in Model)
+    {
+        <h2><a href="/Cinema/Details/@cinema.CinemaID"> @cinema.CinemaName </a></h2>
+
+    }
+</div>
+

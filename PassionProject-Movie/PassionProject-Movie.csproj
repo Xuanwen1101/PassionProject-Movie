@@ -182,7 +182,9 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CinemaController.cs" />
     <Compile Include="Controllers\CinemaDataController.cs" />
+    <Compile Include="Controllers\DirectorController.cs" />
     <Compile Include="Controllers\DirectorDataController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -218,6 +220,10 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Movie.cs" />
+    <Compile Include="Models\ViewModels\DetailsCinema.cs" />
+    <Compile Include="Models\ViewModels\DetailsDirector.cs" />
+    <Compile Include="Models\ViewModels\DetailsMovie.cs" />
+    <Compile Include="Models\ViewModels\UpdateMovie.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -282,6 +288,20 @@
     <Content Include="Views\Movie\Details.cshtml" />
     <Content Include="Views\Movie\Error.cshtml" />
     <Content Include="Views\Movie\New.cshtml" />
+    <Content Include="Views\Movie\Edit.cshtml" />
+    <Content Include="Views\Movie\DeleteConfirm.cshtml" />
+    <Content Include="Views\Director\New.cshtml" />
+    <Content Include="Views\Director\List.cshtml" />
+    <Content Include="Views\Director\Error.cshtml" />
+    <Content Include="Views\Cinema\Error.cshtml" />
+    <Content Include="Views\Director\DeleteConfirm.cshtml" />
+    <Content Include="Views\Cinema\DeleteConfirm.cshtml" />
+    <Content Include="Views\Director\Edit.cshtml" />
+    <Content Include="Views\Cinema\Edit.cshtml" />
+    <Content Include="Views\Director\Details.cshtml" />
+    <Content Include="Views\Cinema\Details.cshtml" />
+    <Content Include="Views\Cinema\List.cshtml" />
+    <Content Include="Views\Cinema\New.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

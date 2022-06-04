@@ -1,0 +1,33 @@
+﻿@model PassionProject_Movie.Models.ViewModels.DetailsCinema
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Cinema's Details</h2>
+
+<div>
+    <a class="navlink" href="/Cinema/List">Back To Cinemas' List</a>
+</div>
+<div>
+    <a class="dellink" href="/Cinema/DeleteConfirm/@Model.SelectedCinema.CinemaID">Delete This Cinema</a>
+</div>
+<div>
+    <a class="navlink" href="/Cinema/Edit/@Model.SelectedCinema.CinemaID">Update This Cinema</a>
+</div>
+
+<div id="containershow">
+    <h2>@Model.SelectedCinema.CinemaName</h2>
+    <div>Location: @Model.SelectedCinema.CinemaLocation</div>
+
+    <div style="margin-top:100px;">
+        <h3>Movies are showing in @Model.SelectedCinema.CinemaName:</h3>
+        @foreach (var movie in Model.ShownMovies)
+        {
+            <div>
+                <a href="/Movie/Details/@movie.MovieID">@movie.MovieName</a>
+            </div>
+        }
+    </div>
+
+</div>
+

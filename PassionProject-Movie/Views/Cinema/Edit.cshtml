@@ -1,0 +1,27 @@
+﻿@model PassionProject_Movie.Models.CinemaDto
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Update Cinema</h2>
+<form action="/Cinema/Update/@Model.CinemaID" method="POST">
+    <div style="display:none;">
+        @* Pass through the Cinema ID *@
+        <input type="text" name="CinemaID" value="@Model.CinemaID" />
+    </div>
+    <div>
+        <label>Name:</label> <input type="text" name="CinemaFName" value="@Model.CinemaName" />
+    </div>
+    <div>
+        <label>Location:</label>
+    </div>
+    <div>
+        <textarea name="CinemaLocation" rows="5" cols="30" maxlength="500">@Model.CinemaLocation</textarea>
+    </div>
+    <div>
+        <input type="submit" value="Update Cinema" />
+
+    </div>
+</form>
+
+

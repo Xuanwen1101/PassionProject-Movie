@@ -1,0 +1,46 @@
+﻿
+@model PassionProject_Movie.Models.ViewModels.UpdateMovie
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Update Movie</h2>
+<form action="/Movie/Update/@Model.SelectedMovie.MovieID" method="POST">
+    <div style="display:none;">
+        @* Pass through the Movie ID *@
+        <input type="text" name="MovieID" value="@Model.SelectedMovie.MovieID" />
+    </div>
+    <div>
+        <label>Name:</label> <input type="text" name="MovieName" value="@Model.SelectedMovie.MovieName" />
+    </div>
+    <div>
+        <label>Director:</label>
+
+        @*<select name="DirectorID">
+            @foreach (var director in Model.DirectorOptions)
+            {
+                string selected = "";
+                if (director.DirectorID == Model.SelectedMovie.DirectorID)
+                {
+                    selected = "selected";
+                }
+            <option value="@director.DirectorID" @selected>@director.DirectorFName @director.DirectorLName</option>
+
+            }
+        </select>*@
+    </div>
+    <div>
+        <label>Release Date:</label> <input type="date" name="ReleaseDate" value="@Model.SelectedMovie.ReleaseDate" />
+    </div>
+    <div>
+        <label>Introduction:</label>
+    </div>
+    <div>
+        <textarea name="MovieIntro" rows="5" cols="30" maxlength="500">@Model.SelectedMovie.MovieIntro</textarea>
+    </div>
+    <div>
+        <input type="submit" value="Update Movie" />
+
+    </div>
+</form>
+
