@@ -85,7 +85,7 @@ namespace PassionProject_Movie.Controllers
         /// </returns>
         /// <param name="id">Movie Primary Key</param>
         /// <example>
-        /// GET: api/CinemaData/ListCinemasNotCaringForMovie/1
+        /// GET: api/CinemaData/ListCinemasNotShowingForMovie/1
         /// </example>
         [HttpGet]
         [ResponseType(typeof(CinemaDto))]

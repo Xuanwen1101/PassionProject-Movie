@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<PassionProject_Movie.Models.DirectorDto>
 @{
     ViewBag.Title = "Create";
 }
@@ -10,7 +10,15 @@
         <label>Name:</label> <input type="text" name="MovieName" />
     </div>
     <div>
-        <label>Director ID:</label> <input type="number" name="DirectorID" />
+        <label>Director:</label>
+
+        <select name="DirectorID">
+            @foreach (var director in Model)
+            {
+                <option value="@director.DirectorID">@director.DirectorFName @director.DirectorLName</option>
+
+            }
+        </select>
     </div>
     <div>
         <label>Release Date:</label> <input type="date" name="ReleaseDate" />

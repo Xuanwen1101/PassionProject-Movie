@@ -62,7 +62,7 @@ namespace PassionProject_Movie.Controllers
 
             ViewModel.ShowingCinemas = showingCinemas;
 
-            url = "CinemaData/ListCinemasNotCaringForMovie/" + id;
+            url = "CinemaData/ListCinemasNotShowingForMovie/" + id;
             response = client.GetAsync(url).Result;
             IEnumerable<CinemaDto> availableCinemas = response.Content.ReadAsAsync<IEnumerable<CinemaDto>>().Result;
 
@@ -162,11 +162,11 @@ namespace PassionProject_Movie.Controllers
 
             //all directors to choose from when updating this movie
             //the existing Director Options
-            url = "DirectorData/ListDirector/";
+            url = "DirectorData/ListDirectors/";
             response = client.GetAsync(url).Result;
-            IEnumerable<DirectorDto> DirectorOptions = response.Content.ReadAsAsync<IEnumerable<DirectorDto>>().Result;
+            IEnumerable<DirectorDto> directorOptions = response.Content.ReadAsAsync<IEnumerable<DirectorDto>>().Result;
 
-            ViewModel.DirectorOptions = DirectorOptions;
+            ViewModel.DirectorOptions = directorOptions;
 
             return View(ViewModel);
         }

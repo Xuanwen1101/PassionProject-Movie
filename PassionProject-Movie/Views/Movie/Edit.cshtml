@@ -16,7 +16,7 @@
     <div>
         <label>Director:</label>
 
-        @*<select name="DirectorID">
+        <select name="DirectorID">
             @foreach (var director in Model.DirectorOptions)
             {
                 string selected = "";
@@ -27,10 +27,10 @@
             <option value="@director.DirectorID" @selected>@director.DirectorFName @director.DirectorLName</option>
 
             }
-        </select>*@
+        </select>
     </div>
     <div>
-        <label>Release Date:</label> <input type="date" name="ReleaseDate" value="@Model.SelectedMovie.ReleaseDate" />
+        <label>Release Date:</label> <input type="date" name="ReleaseDate" value="@Model.SelectedMovie.ReleaseDate.ToString("yyyy-MM-dd")" />
     </div>
     <div>
         <label>Introduction:</label>

@@ -1,5 +1,5 @@
 ﻿
-@model PassionProject_Movie.Models.MovieDto
+@model PassionProject_Movie.Models.ViewModels.DetailsMovie
 @{
     ViewBag.Title = "Details";
 }
@@ -10,15 +10,40 @@
     <a class="navlink" href="/Movie/List">Back To Movies' List</a>
 </div>
 <div>
-    <a class="dellink" href="/Movie/DeleteConfirm/@Model.MovieID">Delete This Movie</a>
+    <a class="dellink" href="/Movie/DeleteConfirm/@Model.SelectedMovie.MovieID">Delete This Movie</a>
 </div>
 <div>
-    <a class="navlink" href="/Movie/Edit/@Model.MovieID">Update This Movie</a>
+    <a class="navlink" href="/Movie/Edit/@Model.SelectedMovie.MovieID">Update This Movie</a>
 </div>
 
 <div id="containershow">
-    <h2>@Model.MovieName</h2>
-    <div>Introduction: @Model.MovieIntro</div>
-    <div>Release Date: @Model.ReleaseDate.ToString("dd-MMM-yyyy")</div>
-    <div>Director: @Model.DirectorFName @Model.DirectorLName</div>
+    <h2>@Model.SelectedMovie.MovieName</h2>
+    <div>Introduction: @Model.SelectedMovie.MovieIntro</div>
+    <div>Release Date: @Model.SelectedMovie.ReleaseDate.ToString("yyyy-MM-dd")</div>
+    
+    <div>Director: <a href="/Director/Details/@Model.SelectedMovie.DirectorID"> @Model.SelectedMovie.DirectorFName @Model.SelectedMovie.DirectorLName</a></div>
+
+    <div>
+        <h2>Cinemas Responsible for @Model.SelectedMovie.MovieName:</h2>
+        @foreach (var cinema in Model.ShowingCinemas)
+        {
+            <div>
+                <a href="/Cinema/Details/@cinema.CinemaID">@cinema.CinemaName</a> <a style="color:#ab2020;" href="/Movie/Unassociate/@Model.SelectedMovie.MovieID?CinemaID=@cinema.CinemaID">[x]</a>
+            </div>
+        }
+
+        <div>
+            <h4>Add new Cinema to take care of @Model.SelectedMovie.MovieName</h4>
+            <form method="POST" action="/Movie/Associate/@Model.SelectedMovie.MovieID">
+                <select name="CinemaID">
+                    @foreach (var cinema in Model.AvailableCinemas)
+                    {
+                        <option value="@cinema.CinemaID">@cinema.CinemaName</option>
+                    }
+
+                </select>
+                <input type="submit" value="Associate Cinema" />
+            </form>
+        </div>
+    </div>
 </div>
