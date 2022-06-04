@@ -5,7 +5,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/Xuanwen1101/PassionProject-Movie">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="images/logo.png" alt="Logo" width="120" height="80">
   </a>
 
   <h3 align="center">Find New Movies</h3>
@@ -31,7 +31,6 @@
     <li><a href="#project-scope">Project Scope</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
@@ -84,19 +83,29 @@ Make sure to utilize Jsondata/movie.json to formulate data you wish to send as p
 {id} should be replaced with the movie's primary key ID. 
 
 Get a List of Movies
+```
 curl https://localhost:44349/api/MovieData/ListMovies
+```
 
 Find the selecsted Movie
+```
 curl https://localhost:44349/api/MovieData/FindMovie/{id}
+```
 
 Add a new Movie (new movie info is in movie.json)
+```
 curl -H "Content-Type:application/json" -d @movie.json https://localhost:44349/api/MovieData/AddMovie
+```
 
 Delete the selecsted Movie
+```
 curl -d "" https://localhost:44349/api/MovieData/DeleteMovie/{id}
+```
 
 Update a Movie (add the selecsted movie id into movie.json)
+```
 curl -H "Content-Type:application/json" -d @movie.json  https://localhost:44349/api/MovieData/UpdateMovie/{id}
+```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -106,7 +115,7 @@ curl -H "Content-Type:application/json" -d @movie.json  https://localhost:44349/
 ## Entities Relationship
 
 
-![Entyties Relationship](images/er.png)
+![Entyties Relationship](images/er.PNG)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
