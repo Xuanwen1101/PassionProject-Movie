@@ -101,9 +101,9 @@ namespace PassionProject_Movie.Controllers
             return View(selectedCinema);
         }
 
-        // POST: Cinema/Edit/5
+        // POST: Cinema/Update/5
         [HttpPost]
-        public ActionResult Edit(int id, Cinema cinema)
+        public ActionResult Update(int id, Cinema cinema)
         {
             string url = "CinemaData/UpdateCinema/" + id;
             string jsonPayload = jss.Serialize(cinema);

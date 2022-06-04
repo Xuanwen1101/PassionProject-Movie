@@ -12,15 +12,15 @@
     <a class="dellink" href="/Cinema/DeleteConfirm/@Model.SelectedCinema.CinemaID">Delete This Cinema</a>
 </div>
 <div>
-    <a class="navlink" href="/Cinema/Edit/@Model.SelectedCinema.CinemaID">Update This Cinema</a>
+    <a style="color: #8338ec;" href="/Cinema/Edit/@Model.SelectedCinema.CinemaID">Update This Cinema</a>
 </div>
 
 <div id="containershow">
-    <h2>@Model.SelectedCinema.CinemaName</h2>
-    <div>Location: @Model.SelectedCinema.CinemaLocation</div>
+    <h2 style="color: #0a9396 ">@Model.SelectedCinema.CinemaName</h2>
+    <div><label>Location:</label> @Model.SelectedCinema.CinemaLocation</div>
 
     <div style="margin-top:100px;">
-        <h3>Movies are showing in @Model.SelectedCinema.CinemaName:</h3>
+        <h3>Movies are showing in <span style="color: #0a9396 ">@Model.SelectedCinema.CinemaName</span>:</h3>
         @foreach (var movie in Model.ShownMovies)
         {
             <div>

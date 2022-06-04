@@ -13,18 +13,18 @@
     <a class="dellink" href="/Movie/DeleteConfirm/@Model.SelectedMovie.MovieID">Delete This Movie</a>
 </div>
 <div>
-    <a class="navlink" href="/Movie/Edit/@Model.SelectedMovie.MovieID">Update This Movie</a>
+    <a style="color: #8338ec;" href="/Movie/Edit/@Model.SelectedMovie.MovieID">Update This Movie</a>
 </div>
 
 <div id="containershow">
-    <h2>@Model.SelectedMovie.MovieName</h2>
-    <div>Introduction: @Model.SelectedMovie.MovieIntro</div>
-    <div>Release Date: @Model.SelectedMovie.ReleaseDate.ToString("yyyy-MM-dd")</div>
+    <h2 style="color: #0a9396 ">@Model.SelectedMovie.MovieName</h2>
+    <div><label>Introduction:</label> @Model.SelectedMovie.MovieIntro</div>
+    <div><label>Release Date:</label> @Model.SelectedMovie.ReleaseDate.ToString("yyyy-MM-dd")</div>
     
-    <div>Director: <a href="/Director/Details/@Model.SelectedMovie.DirectorID"> @Model.SelectedMovie.DirectorFName @Model.SelectedMovie.DirectorLName</a></div>
+    <div><label>Director:</label> <a href="/Director/Details/@Model.SelectedMovie.DirectorID"> @Model.SelectedMovie.DirectorFName @Model.SelectedMovie.DirectorLName</a></div>
 
     <div>
-        <h2>Cinemas Responsible for @Model.SelectedMovie.MovieName:</h2>
+        <h2>Cinemas are showing <span style="color: #0a9396 ">@Model.SelectedMovie.MovieName</span>:</h2>
         @foreach (var cinema in Model.ShowingCinemas)
         {
             <div>
@@ -33,7 +33,7 @@
         }
 
         <div>
-            <h4>Add new Cinema to take care of @Model.SelectedMovie.MovieName</h4>
+            <h4>Add new Cinema to show this Movie</h4>
             <form method="POST" action="/Movie/Associate/@Model.SelectedMovie.MovieID">
                 <select name="CinemaID">
                     @foreach (var cinema in Model.AvailableCinemas)

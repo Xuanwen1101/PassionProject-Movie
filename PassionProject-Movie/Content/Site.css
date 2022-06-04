@@ -31,6 +31,10 @@ textarea {
     color: red;
 }
 
+.editlink {
+    color: purple;
+}
+
 .delbutton {
     display: block;
     margin: 0 auto;
