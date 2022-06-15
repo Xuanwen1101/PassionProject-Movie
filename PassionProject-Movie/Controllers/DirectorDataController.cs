@@ -97,6 +97,7 @@ namespace PassionProject_Movie.Controllers
         /// </example>
         [ResponseType(typeof(void))]
         [HttpPost]
+        [Authorize]
         public IHttpActionResult UpdateDirector(int id, Director director)
         {
             if (!ModelState.IsValid)
@@ -147,6 +148,7 @@ namespace PassionProject_Movie.Controllers
         /// </example>
         [ResponseType(typeof(Director))]
         [HttpPost]
+        [Authorize]
         public IHttpActionResult AddDirector(Director director)
         {
             if (!ModelState.IsValid)
@@ -176,6 +178,7 @@ namespace PassionProject_Movie.Controllers
         /// </example>
         [ResponseType(typeof(Director))]
         [HttpPost]
+        [Authorize]
         public IHttpActionResult DeleteDirector(int id)
         {
             Director director = db.Directors.Find(id);

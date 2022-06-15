@@ -133,6 +133,7 @@ namespace PassionProject_Movie.Controllers
         /// </example>
         [HttpPost]
         [Route("api/MovieData/AssociateMovieWithCinema/{movieId}/{cinemaId}")]
+        [Authorize]
         public IHttpActionResult AssociateMovieWithCinema(int movieId, int cinemaId)
         {
 
@@ -166,6 +167,7 @@ namespace PassionProject_Movie.Controllers
         /// </example>
         [HttpPost]
         [Route("api/MovieData/UnAssociateMovieWithCinema/{movieId}/{cinemaId}")]
+        [Authorize]
         public IHttpActionResult UnAssociateMovieWithCinema(int movieId, int cinemaId)
         {
 
@@ -241,6 +243,7 @@ namespace PassionProject_Movie.Controllers
         /// </example>
         [ResponseType(typeof(void))]
         [HttpPost]
+        [Authorize]
         public IHttpActionResult UpdateMovie(int id, Movie movie)
         {
             if (!ModelState.IsValid)
@@ -291,6 +294,7 @@ namespace PassionProject_Movie.Controllers
         /// </example>
         [ResponseType(typeof(Movie))]
         [HttpPost]
+        [Authorize]
         public IHttpActionResult AddMovie(Movie movie)
         {
             if (!ModelState.IsValid)
@@ -320,6 +324,7 @@ namespace PassionProject_Movie.Controllers
         /// </example>
         [ResponseType(typeof(Movie))]
         [HttpPost]
+        [Authorize]
         public IHttpActionResult DeleteMovie(int id)
         {
             Movie movie = db.Movies.Find(id);

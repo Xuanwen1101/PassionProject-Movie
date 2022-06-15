@@ -159,6 +159,7 @@ namespace PassionProject_Movie.Controllers
         /// </example>
         [ResponseType(typeof(void))]
         [HttpPost]
+        [Authorize]
         public IHttpActionResult UpdateCinema(int id, Cinema cinema)
         {
             if (!ModelState.IsValid)
@@ -209,6 +210,7 @@ namespace PassionProject_Movie.Controllers
         /// </example>
         [ResponseType(typeof(Cinema))]
         [HttpPost]
+        [Authorize]
         public IHttpActionResult AddCinema(Cinema cinema)
         {
             if (!ModelState.IsValid)
@@ -238,6 +240,7 @@ namespace PassionProject_Movie.Controllers
         /// </example>
         [ResponseType(typeof(Cinema))]
         [HttpPost]
+        [Authorize]
         public IHttpActionResult DeleteCinema(int id)
         {
             Cinema cinema = db.Cinemas.Find(id);

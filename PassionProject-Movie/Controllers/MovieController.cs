@@ -18,9 +18,45 @@ namespace PassionProject_Movie.Controllers
 
         static MovieController()
         {
-            client = new HttpClient();
+            //client = new HttpClient();
+            HttpClientHandler handler = new HttpClientHandler()
+            {
+                AllowAutoRedirect = false,
+                //cookies are manually set in RequestHeader
+                UseCookies = false
+            };
+
+            client = new HttpClient(handler);
+
             client.BaseAddress = new Uri("https://localhost:44349/api/");
         }
+
+
+        /// <summary>
+        /// Grabs the authentication cookie sent to this controller.
+        /// For proper WebAPI authentication, you can send a post request with login credentials to the WebAPI and log the access token from the response. The controller already knows this token, so we're just passing it up the chain.
+        /// 
+        /// Here is a descriptive article which walks through the process of setting up authorization/authentication directly.
+        /// https://docs.microsoft.com/en-us/aspnet/web-api/overview/security/individual-accounts-in-web-api
+        /// </summary>
+        private void GetApplicationCookie()
+        {
+            string token = "";
+
+            client.DefaultRequestHeaders.Remove("Cookie");
+            if (!User.Identity.IsAuthenticated) return;
+
+            HttpCookie cookie = System.Web.HttpContext.Current.Request.Cookies.Get(".AspNet.ApplicationCookie");
+            if (cookie != null) token = cookie.Value;
+
+            //collect token as it is submitted to the controller
+            //use it to pass along to the WebAPI.
+            Debug.WriteLine("Token Submitted is : " + token);
+            if (token != "") client.DefaultRequestHeaders.Add("Cookie", ".AspNet.ApplicationCookie=" + token);
+
+            return;
+        }
+
 
         /// GET: Movie/List
         public ActionResult List()
@@ -75,8 +111,10 @@ namespace PassionProject_Movie.Controllers
 
         //POST: Movie/Associate/{movieId}
         [HttpPost]
+        [Authorize]
         public ActionResult Associate(int id, int CinemaID)
         {
+            GetApplicationCookie();//get token credentials
             //Debug.WriteLine("Attempting to associate movie :" + id + " with cinema " + CinemaID);
 
             //associate movie with cinema
@@ -91,8 +129,10 @@ namespace PassionProject_Movie.Controllers
 
         //Get: Movie/UnAssociate/{id}?CinemaID={cinemaID}
         [HttpGet]
+        [Authorize]
         public ActionResult UnAssociate(int id, int CinemaID)
         {
+            GetApplicationCookie();//get token credentials
             //Debug.WriteLine("Attempting to unassociate movie :" + id + " with cinema: " + CinemaID);
 
             //unassociate movie with cinema
@@ -111,6 +151,7 @@ namespace PassionProject_Movie.Controllers
         }
 
         // GET: Movie/New
+        [Authorize]
         public ActionResult New()
         {
             string url = "DirectorData/ListDirectors";
@@ -122,9 +163,10 @@ namespace PassionProject_Movie.Controllers
 
         // POST: Movie/Create
         [HttpPost]
+        [Authorize]
         public ActionResult Create(Movie movie)
         {
-
+            GetApplicationCookie();//get token credentials
             //objective: add a new movie into our system using the API
             //curl -H "Content-Type:application/json" -d @movie.json https://localhost:44349/api/MovieData/AddMovie 
             string url = "MovieData/AddMovie";
@@ -149,6 +191,7 @@ namespace PassionProject_Movie.Controllers
         }
 
         // GET: Movie/Edit/5
+        [Authorize]
         public ActionResult Edit(int id)
         {
             UpdateMovie ViewModel = new UpdateMovie();
@@ -173,8 +216,10 @@ namespace PassionProject_Movie.Controllers
 
         // POST: Movie/Update/5
         [HttpPost]
+        [Authorize]
         public ActionResult Update(int id, Movie movie)
         {
+            GetApplicationCookie();//get token credentials
             //objective: update the selected movie into our system using the API
             //curl -H "Content-Type:application/json" -d @movie.json  https://localhost:44349/api/MovieData/UpdateMovie/{id}
             string url = "MovieData/UpdateMovie/" + id;
@@ -195,6 +240,7 @@ namespace PassionProject_Movie.Controllers
         }
 
         // GET: Movie/DeleteConfirm/5
+        [Authorize]
         public ActionResult DeleteConfirm(int id)
         {
             // get the existing movie information
@@ -209,8 +255,10 @@ namespace PassionProject_Movie.Controllers
 
         // POST: Movie/Delete/5
         [HttpPost]
+        [Authorize]
         public ActionResult Delete(int id)
         {
+            GetApplicationCookie();//get token credentials
             //objective: delete the selected movie from our system using the API
             //curl -d "" https://localhost:44349/api/MovieData/DeleteMovie/{id}
             string url = "MovieData/DeleteMovie/" + id;
