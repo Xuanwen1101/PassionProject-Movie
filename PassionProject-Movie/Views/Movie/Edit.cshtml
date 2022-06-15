@@ -5,7 +5,7 @@
 }
 
 <h2>Update Movie</h2>
-<form action="/Movie/Update/@Model.SelectedMovie.MovieID" method="POST">
+<form action="/Movie/Update/@Model.SelectedMovie.MovieID" method="POST" enctype="multipart/form-data">
     <div style="display:none;">
         @* Pass through the Movie ID *@
         <input type="text" name="MovieID" value="@Model.SelectedMovie.MovieID" />
@@ -24,7 +24,7 @@
                 {
                     selected = "selected";
                 }
-            <option value="@director.DirectorID" @selected>@director.DirectorFName @director.DirectorLName</option>
+                <option value="@director.DirectorID" @selected>@director.DirectorFName @director.DirectorLName</option>
 
             }
         </select>
@@ -37,6 +37,9 @@
     </div>
     <div>
         <textarea name="MovieIntro" rows="5" cols="30" maxlength="500">@Model.SelectedMovie.MovieIntro</textarea>
+    </div>
+    <div style="padding-top: 10px; padding-bottom: 20px; ">
+        <input type="file" name="MoviePicture" />
     </div>
     <div>
         <input type="submit" value="Update Movie" />

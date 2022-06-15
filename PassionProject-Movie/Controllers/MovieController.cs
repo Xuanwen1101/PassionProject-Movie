@@ -217,7 +217,7 @@ namespace PassionProject_Movie.Controllers
         // POST: Movie/Update/5
         [HttpPost]
         [Authorize]
-        public ActionResult Update(int id, Movie movie)
+        public ActionResult Update(int id, Movie movie, HttpPostedFileBase MoviePicture)
         {
             GetApplicationCookie();//get token credentials
             //objective: update the selected movie into our system using the API
@@ -229,14 +229,32 @@ namespace PassionProject_Movie.Controllers
             content.Headers.ContentType.MediaType = "application/json";
             HttpResponseMessage response = client.PostAsync(url, content).Result;
             Debug.WriteLine(content);
-            if (response.IsSuccessStatusCode)
+
+            //update request is successful, and we have image data
+            if (response.IsSuccessStatusCode && MoviePicture != null)
             {
+                //Updating the Movie picture as a separate request
+                Debug.WriteLine("Calling Update Image method.");
+                //Send over image data for player
+                url = "MovieData/UploadMoviePicture/" + id;
+
+                MultipartFormDataContent requestcontent = new MultipartFormDataContent();
+                HttpContent imagecontent = new StreamContent(MoviePicture.InputStream);
+                requestcontent.Add(imagecontent, "MoviePicture", MoviePicture.FileName);
+                response = client.PostAsync(url, requestcontent).Result;
+
+                return RedirectToAction("List");
+            }
+            else if (response.IsSuccessStatusCode)
+            {
+                //No image upload, but update still successful
                 return RedirectToAction("List");
             }
             else
             {
                 return RedirectToAction("Error");
             }
+
         }
 
         // GET: Movie/DeleteConfirm/5

@@ -18,9 +18,17 @@
 
 <div id="containershow">
     <h2 style="color: #0a9396 ">@Model.SelectedMovie.MovieName</h2>
+    @{
+        string imageurl = "/Content/Images/Movies/default.png";
+        if (Model.SelectedMovie.MovieHasPic)
+        {
+            imageurl = "/Content/Images/Movies/" + Model.SelectedMovie.MovieID + "." + Model.SelectedMovie.PicExtension;
+        }
+    }
+    <div><img src="@imageurl" width="300" alt="@Model.SelectedMovie.MovieName"/></div>
     <div><label>Introduction:</label> @Model.SelectedMovie.MovieIntro</div>
     <div><label>Release Date:</label> @Model.SelectedMovie.ReleaseDate.ToString("yyyy-MM-dd")</div>
-    
+
     <div><label>Director:</label> <a href="/Director/Details/@Model.SelectedMovie.DirectorID"> @Model.SelectedMovie.DirectorFName @Model.SelectedMovie.DirectorLName</a></div>
 
     <div>

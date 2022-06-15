@@ -16,6 +16,11 @@ namespace PassionProject_Movie.Models
         public string MovieIntro { get; set; }
         public DateTime ReleaseDate { get; set; }
 
+        //data needed for keeping track of Movie images uploaded
+        //images deposited into /Content/Images/Movies/{id}.{extension}
+        public bool MovieHasPic { get; set; }
+        public string PicExtension { get; set; }
+
 
         //A movie is created by one director.
         //A director can make many movies.
@@ -37,6 +42,11 @@ namespace PassionProject_Movie.Models
         public int DirectorID { get; set; }
         public string DirectorFName { get; set; }
         public string DirectorLName { get; set; }
+
+        //data needed for keeping track of Movies images uploaded
+        //images deposited into /Content/Images/Movies/{id}.{extension}
+        public bool MovieHasPic { get; set; }
+        public string PicExtension { get; set; }
 
     }
 

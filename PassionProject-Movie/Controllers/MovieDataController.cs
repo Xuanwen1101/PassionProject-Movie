@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Web;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -9,6 +11,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using PassionProject_Movie.Models;
+using System.Diagnostics;
 
 namespace PassionProject_Movie.Controllers
 {
@@ -39,6 +42,8 @@ namespace PassionProject_Movie.Controllers
                 MovieName = m.MovieName,
                 MovieIntro = m.MovieIntro,
                 ReleaseDate = m.ReleaseDate,
+                MovieHasPic = m.MovieHasPic,
+                PicExtension = m.PicExtension,
                 DirectorID = m.Director.DirectorID,
                 DirectorFName = m.Director.DirectorFName,
                 DirectorLName = m.Director.DirectorLName
@@ -73,6 +78,8 @@ namespace PassionProject_Movie.Controllers
                 MovieName = m.MovieName,
                 MovieIntro = m.MovieIntro,
                 ReleaseDate = m.ReleaseDate,
+                MovieHasPic = m.MovieHasPic,
+                PicExtension = m.PicExtension,
                 DirectorID = m.Director.DirectorID,
                 DirectorFName = m.Director.DirectorFName,
                 DirectorLName = m.Director.DirectorLName
@@ -109,6 +116,8 @@ namespace PassionProject_Movie.Controllers
                 MovieName = m.MovieName,
                 MovieIntro = m.MovieIntro,
                 ReleaseDate = m.ReleaseDate,
+                MovieHasPic = m.MovieHasPic,
+                PicExtension = m.PicExtension,
                 DirectorID = m.Director.DirectorID,
                 DirectorFName = m.Director.DirectorFName,
                 DirectorLName = m.Director.DirectorLName
@@ -212,6 +221,8 @@ namespace PassionProject_Movie.Controllers
                 MovieName = Movie.MovieName,
                 MovieIntro = Movie.MovieIntro,
                 ReleaseDate = Movie.ReleaseDate,
+                MovieHasPic = Movie.MovieHasPic,
+                PicExtension = Movie.PicExtension,
                 DirectorID = Movie.Director.DirectorID,
                 DirectorFName = Movie.Director.DirectorFName,
                 DirectorLName = Movie.Director.DirectorLName
@@ -257,6 +268,9 @@ namespace PassionProject_Movie.Controllers
             }
 
             db.Entry(movie).State = EntityState.Modified;
+            // Picture update is handled by another method
+            db.Entry(movie).Property(m => m.MovieHasPic).IsModified = false;
+            db.Entry(movie).Property(m => m.PicExtension).IsModified = false;
 
             try
             {
@@ -275,6 +289,91 @@ namespace PassionProject_Movie.Controllers
             }
 
             return StatusCode(HttpStatusCode.NoContent);
+        }
+
+
+        /// <summary>
+        /// Receives movie picture data, uploads it to the webserver and updates the movie's HasPic option
+        /// </summary>
+        /// <param name="id">the movie id</param>
+        /// <returns>status code 200 if successful.</returns>
+        /// <example>
+        /// curl -F MoviePicture=@file.jpg "https://localhost:44349/api/MovieData/UploadMoviePicture/5"
+        /// POST: api/MovieData/UploadMoviePicture/5
+        /// HEADER: enctype=multipart/form-data
+        /// FORM-DATA: image
+        /// </example>
+        /// https://stackoverflow.com/questions/28369529/how-to-set-up-a-web-api-controller-for-multipart-form-data
+
+        [HttpPost]
+        [Authorize]
+        public IHttpActionResult UploadMoviePicture(int id)
+        {
+
+            bool haspic = false;
+            string picextension;
+            if (Request.Content.IsMimeMultipartContent())
+            {
+                //Debug.WriteLine("Received multipart form data.");
+
+                int numfiles = HttpContext.Current.Request.Files.Count;
+                //Debug.WriteLine("Files Received: " + numfiles);
+
+                //Check if a file is posted
+                if (numfiles == 1 && HttpContext.Current.Request.Files[0] != null)
+                {
+                    var moviePicture = HttpContext.Current.Request.Files[0];
+                    //Check if the file is empty
+                    if (moviePicture.ContentLength > 0)
+                    {
+                        //establish valid file types (can be changed to other file extensions if desired!)
+                        var valtypes = new[] { "jpeg", "jpg", "png", "gif" };
+                        var extension = Path.GetExtension(moviePicture.FileName).Substring(1);
+                        //Check the extension of the file
+                        if (valtypes.Contains(extension))
+                        {
+                            try
+                            {
+                                //file name is the id of the image
+                                string fn = id + "." + extension;
+
+                                //get a direct file path to ~/Content/Images/Movies/{id}.{extension}
+                                string path = Path.Combine(HttpContext.Current.Server.MapPath("~/Content/Images/Movies/"), fn);
+
+                                //save the file
+                                moviePicture.SaveAs(path);
+
+                                //if these are all successful then we can set these fields
+                                haspic = true;
+                                picextension = extension;
+
+                                //Update the movie haspic and picextension fields in the database
+                                Movie SelectedMovie = db.Movies.Find(id);
+                                SelectedMovie.MovieHasPic = haspic;
+                                SelectedMovie.PicExtension = extension;
+                                db.Entry(SelectedMovie).State = EntityState.Modified;
+
+                                db.SaveChanges();
+
+                            }
+                            catch (Exception ex)
+                            {
+                                Debug.WriteLine("Movie Image was not saved successfully.");
+                                Debug.WriteLine("Exception:" + ex);
+                                return BadRequest();
+                            }
+                        }
+                    }
+
+                }
+
+                return Ok();
+            }
+            else
+            {
+                //not multipart form data
+                return BadRequest();
+            }
         }
 
 
@@ -331,6 +430,17 @@ namespace PassionProject_Movie.Controllers
             if (movie == null)
             {
                 return NotFound();
+            }
+
+            if (movie.MovieHasPic && movie.PicExtension != "")
+            {
+                //also delete image from path
+                string path = HttpContext.Current.Server.MapPath("~/Content/Images/Movies/" + id + "." + movie.PicExtension);
+                if (System.IO.File.Exists(path))
+                {
+                    Debug.WriteLine("File exists... preparing to delete!");
+                    System.IO.File.Delete(path);
+                }
             }
 
             db.Movies.Remove(movie);
