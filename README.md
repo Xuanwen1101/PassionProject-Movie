@@ -29,6 +29,7 @@
     <li><a href="#example-api-commands">Example API Commands</a></li>
     <li><a href="#entities-relationship">Entities Relationship</a></li>
     <li><a href="#project-scope">Project Scope</a></li>
+    <li><a href="#future-features">Future Features</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
   </ol>
@@ -66,7 +67,7 @@ Find New Movies is a Movie Information System Web Application that stores and sh
 ```
 update-database
 ```
-- Check that the database (View > SQL Server Object Explorer > MSSQLLocalDb > ..)
+- Check that the database (View > SQL Server Object Explorer > MSSQLLocalDb > ...)
 - Run the example API commands through CURL
 - The project has been set up
 
@@ -102,9 +103,14 @@ Delete the selecsted Movie
 curl -d "" https://localhost:44349/api/MovieData/DeleteMovie/{id}
 ```
 
-Update a Movie (add the selecsted movie id into movie.json)
+Update a Movie (add the selected movie id into movie.json)
 ```
 curl -H "Content-Type:application/json" -d @movie.json  https://localhost:44349/api/MovieData/UpdateMovie/{id}
+```
+
+Update an Movie's Picture (the movie picture is in file.jpg) 
+```
+curl -F MoviePicture=@file.jpg https://localhost:44349/api/MovieData/UploadMoviePicture/{id}
 ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -127,7 +133,20 @@ curl -H "Content-Type:application/json" -d @movie.json  https://localhost:44349/
 - Manage Movie (CRUD)
 - Manage Director (CRUD)
 - Manage Cinema (CRUD)
-- Manage relationship between Movie and Cinema
+- Manage Relationship between Movie and Cinema
+- User Authentication
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+
+<!-- Future Features & Improvements -->
+## Future Features
+
+- Search Functionality
+- Rating Functionality
+- Show Cinema Location in Map
+- UX/UI Design
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
